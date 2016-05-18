@@ -58,8 +58,8 @@ public class BasePageHandler implements HttpHandler {
 			}
 		}
 		
-		System.out.println("----PAGE----");
-		System.out.println(page);
+		//System.out.println("----PAGE----");
+		//System.out.println(page);
 		
 		HandlerFs.respondHTML(arg0, 200, page);
 	}
