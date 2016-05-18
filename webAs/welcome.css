@@ -1,0 +1,10 @@
+.title {
+	top:25%;
+}
+
+#button_start {
+	width: 200px;
+	height: 75px;
+	left: calc(50% - 100px);
+	top: calc(25% + 150px);
+}
