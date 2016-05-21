@@ -38,6 +38,23 @@ public class Start {
 			s.createContext("/q", new QuestionHandler());
 			s.createContext("/complete", new CompleteHandler());
 			
+			
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					while(true) {
+						System.out.println("-----SAVING_ALs-----");
+						saveALs();
+						try {
+							Thread.sleep(1200000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}).start();
+			
+			
 			while(!scanner.nextLine().equals("stop"));
 
 			System.out.println("-----SAVING_ALs-----");
