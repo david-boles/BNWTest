@@ -1,8 +1,12 @@
 package space.davidboles.bnwtest;
 
+import java.util.Scanner;
+
 import space.davidboles.bnwtest.handlers.BasePageHandler;
+import space.davidboles.bnwtest.handlers.CompleteHandler;
 import space.davidboles.bnwtest.handlers.QuestionHandler;
 import space.davidboles.bnwtest.handlers.TestInitHandler;
+import space.davidboles.lib.database.Attribute;
 import space.davidboles.lib.database.AttributeDefaultsPopulator;
 import space.davidboles.lib.database.AttributeList;
 import space.davidboles.lib.ht.tp.HTTPServerSimpleManager;
@@ -13,6 +17,7 @@ public class Start {
 	
 	public static AttributeList web = null;
 	public static AttributeList tests = null;
+	static Scanner scanner = new Scanner(System.in);
 	
 	public static void main(String[] args) {
 		try {
@@ -31,9 +36,33 @@ public class Start {
 			s.createContext("/start", new BasePageHandler(web, "base.html", "welcome.title", "base.icon.type", "base.icon.location", "base.css", "welcome.content", new String[][]{{"@!-css.additional-!@", "welcome.css"}}));
 			s.createContext("/init_test", new TestInitHandler());
 			s.createContext("/q", new QuestionHandler());
+			s.createContext("/complete", new CompleteHandler());
+			
+			while(!scanner.nextLine().equals("stop"));
+
+			System.out.println("-----SAVING_ALs-----");
+			saveALs();
+			System.out.println("-----STOPPING_SERVER-----");
+			s.stopServer();
+			System.out.println("-----EXITING-----");
+			System.exit(0);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void printTests() {
+		Attribute<?>[] all = Start.tests.getAll();
+		for(int i = 0; i < all.length; i++) {
+			System.out.println(all[i]);
+		}
+	}
+	
+	public static void saveALs() {
+		boolean successful = ProgramFs.saveObject(ProgramFs.getProgramFile("data/web"), web) && ProgramFs.saveObject(ProgramFs.getProgramFile("data/tests"), tests);
+		if(successful) System.out.println("Save successful");
+		else System.out.println("Save failed, errors should have printed");
 	}
 }
 
@@ -116,6 +145,11 @@ class WebPopulator extends AttributeDefaultsPopulator {
 		out.addSet("question.q7.a2", new StringLoadingObject(ProgramFs.getProgramFile("webAs/q7/q7answer2text.html"), 1000, true));
 		out.addSet("question.q7.a3", new StringLoadingObject(ProgramFs.getProgramFile("webAs/q7/q7answer3text.html"), 1000, true));
 		out.addSet("question.q7.a4", new StringLoadingObject(ProgramFs.getProgramFile("webAs/q7/q7answer4text.html"), 1000, true));
+		
+		//COMPLETE
+		out.addSet("complete.title", "BNW Caste Test Results");
+		out.addSet("complete.content", new StringLoadingObject(ProgramFs.getProgramFile("webAs/complete.html"), 1000, true));
+		out.addSet("complete.css", new StringLoadingObject(ProgramFs.getProgramFile("webAs/complete.css"), 1000, true));
 		
 		return out;
 	}

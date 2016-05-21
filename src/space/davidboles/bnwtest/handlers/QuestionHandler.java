@@ -61,6 +61,8 @@ public class QuestionHandler implements HttpHandler {
 				else redLoc = "/q" + (qID+1) + "-" + tID;
 				System.out.println("Redirecting to " + redLoc);
 				HandlerFs.respondRedirect(arg0, HandlerFs.CODE_TEMPORARY_REDIRECT, redLoc);
+				
+				Start.printTests();
 			}else {//If no submission data
 				//Assemble and send question page.
 				int[] randCoresp = randomizeNumbering();

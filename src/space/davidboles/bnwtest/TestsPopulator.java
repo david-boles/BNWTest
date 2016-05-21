@@ -16,7 +16,6 @@ public class TestsPopulator extends AttributeDefaultsPopulator {
 		AttributeList out = new AttributeList();
 		
 		out.addSet("test_id", this.testID);
-		out.addSet("current_question", 1);
 		out.addSet("0", -1);
 		out.addSet("1", -1);
 		out.addSet("2", -1);
